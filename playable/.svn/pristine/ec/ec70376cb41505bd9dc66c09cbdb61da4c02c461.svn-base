@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>defender3 playable</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=IE9">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="ad.size" content="width=480,height=320">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+  <script src="script/images.js"></script>
+  <script src="script/svg.min.js"></script>
+  <script type="text/javascript" src="https://tpc.googlesyndication.com/pagead/gadgets/html5/api/exitapi.js"></script>
+  <script src="script/script.js"></script>
+  <style>
+		html,body{
+			width:100%; height:100%;
+		}
+        @media screen and (orientation: portrait) {
+            body.orient {
+                transform: rotate(90deg);
+            }
+        }
+		.son{width:1024px; height:682.6px; margin: auto;  position: absolute;  top: 50%; left: 50%;  -webkit-transform: translate(-50%,-50%);
+			-ms-transform: translate(-50%,-50%);  transform: translate(-50%,-50%);}
+    </style>
+
+</head>
+
+<body ondragstart="return false;" style="margin: 0; overflow:hidden; background-color:black;">
+  <div id="bg" class="son"></div>
+  <div id="game" class="son"></div>
+  <div id="ui" class="son"></div>
+  <script type="text/javascript">
+	function recalcScale (gamec, rwidth, rheight) {
+		var ww = rwidth || window.innerWidth;
+		var wh = rheight || window.innerHeight;
+		if (ww < wh) {
+			document.body.className = 'orient';
+			var tmp = ww;
+			ww = wh;
+			wh = tmp;
+			gamec.rotate(true);
+		} else {
+			document.body.className = '';
+			gamec.rotate(false);
+		}
+
+		var ratio = wh / gamec.getHeight();
+		if (ratio === 0) {
+			return;
+		}
+		if(gamec.getWidth()*ratio < ww){
+			gameWidth = gamec.getWidth()*ratio;
+			gameHeight = wh;
+		}else{
+			ratio = ww / gamec.getWidth();
+			if (ratio === 0) {
+				return;
+			}
+			gameWidth = ww;
+			gameHeight = gamec.getHeight()*ratio;
+		}
+		document.getElementById('game').style.width = gameWidth+'px';
+		document.getElementById('game').style.height = gameHeight+'px';
+		document.getElementById('ui').style.width = gameWidth+'px';
+		document.getElementById('ui').style.height = gameHeight+'px';
+		document.getElementById('bg').style.width = gameWidth+'px';
+		document.getElementById('bg').style.height = gameHeight+'px';
+		var diffX = (ww-gameWidth)/2;
+		var diffY = (wh-gameHeight)/2;
+		gamec.setScale(gameWidth, gameHeight, ratio);
+		gamec.setDiff(diffX, diffY);
+	}
+  	// importImages();
+  	var gamec = gameFunc();
+    recalcScale(gamec);
+    gamec.init();
+  </script>
+</body>
+</html>
